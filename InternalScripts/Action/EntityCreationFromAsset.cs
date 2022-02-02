@@ -37,10 +37,10 @@ if (asset == null)
 
 var title = await asset.GetPropertyValueAsync<string>("Title");
 var fileName = await asset.GetPropertyValueAsync<string>("FileName");
-//var fileProperties = await asset.GetPropertyValueAsync<string>("FileProperties");
+var fileProperties = await asset.GetPropertyValueAsync<JObject>("FileProperties");
 var approvedBy = await asset.GetPropertyValueAsync<string>("ApprovedBy");
 
-//MClient.Logger.Debug($"Title: {title}");
+MClient.Logger.Debug($"Title: {fileProperties["height"]}");
 
 string logData = JsonConvert
     .SerializeObject(new 
@@ -48,11 +48,11 @@ string logData = JsonConvert
             ExecutionSource = exeSource,
             ExecutionType = exeType,
             TargetId = targetId,
-            TargetType = targetType
+            TargetType = targetType,
             Title = title,
             Filename = fileName,
             ApprovedBy = approvedBy,
-            FileProperties = fileProperties
+            FileProperties = fileProperties.ToString()
         });
 
 MClient.Logger.Debug(logData);
