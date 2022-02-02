@@ -45,6 +45,14 @@ try
     var imageWidth = fileProperties["properties"]["width"];
     var imageHeight = fileProperties["properties"]["height"];    
 
+    var pjLionEntity = await MClient.EntityFactory.CreateAsync("PJ.Lion");
+        pjLionEntity.SetPropertyValue("Name", fileName);
+        pjLionEntity.SetPropertyValue("Width", imageWidth);
+        pjLionEntity.SetPropertyValue("Height", imageHeight);
+        pjLionEntity.SetPropertyValue("StringHeight", imageHeight);
+
+    await MClient.Entities.SaveAsync(pjLionEntity);    
+
     string logData = JsonConvert
     .SerializeObject(new 
         { 
@@ -64,9 +72,6 @@ try
 }
 catch (Exception e)
 {
-    MClient.Logger.Error($"Unable to parse asset properties. Error: {e.Message}");
+    MClient.Logger.Error($"Unable to parse asset properties and create new entity. Error: {e.Message}");
     return;
 }
-
-
-
