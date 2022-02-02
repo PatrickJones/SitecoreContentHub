@@ -35,14 +35,17 @@ if (asset == null)
     return;
 }
 
-var title = await asset.GetPropertyValueAsync<string>("Title");
-var fileName = await asset.GetPropertyValueAsync<string>("FileName");
-var fileProperties = await asset.GetPropertyValueAsync<JObject>("FileProperties");
-var approvedBy = await asset.GetPropertyValueAsync<string>("ApprovedBy");
+try
+{
+    var title = await asset.GetPropertyValueAsync<string>("Title");
+    var fileName = await asset.GetPropertyValueAsync<string>("FileName");
+    var approvedBy = await asset.GetPropertyValueAsync<string>("ApprovedBy");
+    var fileProperties = await asset.GetPropertyValueAsync<JObject>("FileProperties");
 
-MClient.Logger.Debug($"Title: {fileProperties["height"]}");
+    var imageWidth = fileProperties["properties"]["width"];
+    var imageHeight = fileProperties["properties"]["height"];    
 
-string logData = JsonConvert
+    string logData = JsonConvert
     .SerializeObject(new 
         { 
             ExecutionSource = exeSource,
@@ -52,9 +55,18 @@ string logData = JsonConvert
             Title = title,
             Filename = fileName,
             ApprovedBy = approvedBy,
-            FileProperties = fileProperties.ToString()
+            //FileProperties = fileProperties.ToString()
+            Width = imageWidth,
+            Height = imageHeight
         });
 
-MClient.Logger.Debug(logData);
+    MClient.Logger.Debug(logData);
+}
+catch (Exception e)
+{
+    MClient.Logger.Error($"Unable to parse asset properties. Error: {e.Message}");
+    return;
+}
+
 
 
