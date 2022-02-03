@@ -42,16 +42,22 @@ try
     var approvedBy = await asset.GetPropertyValueAsync<string>("ApprovedBy");
     var fileProperties = await asset.GetPropertyValueAsync<JObject>("FileProperties");
 
-    var imageWidth = fileProperties["properties"]["width"];
-    var imageHeight = fileProperties["properties"]["height"];    
+    decimal imageWidth = (decimal)fileProperties["properties"]["width"];
+    decimal imageHeight = (decimal)fileProperties["properties"]["height"];    
 
-    var pjLionEntity = await MClient.EntityFactory.CreateAsync("PJ.Lion");
-        pjLionEntity.SetPropertyValue("Name", fileName);
-        pjLionEntity.SetPropertyValue("Width", imageWidth);
-        pjLionEntity.SetPropertyValue("Height", imageHeight);
-        pjLionEntity.SetPropertyValue("StringHeight", imageHeight);
+    var pjLionEntity = await MClient.EntityFactory.CreateAsync("PJ.Lion").ConfigureAwait(false);
+    
+    pjLionEntity.SetPropertyValue("Name", fileName);
+    pjLionEntity.SetPropertyValue("Width", imageWidth);
+    pjLionEntity.SetPropertyValue("Height", imageHeight);
+    pjLionEntity.SetPropertyValue("HeightString", imageHeight.ToString());
 
-    await MClient.Entities.SaveAsync(pjLionEntity);    
+    var entityId = await MClient.Entities.SaveAsync(pjLionEntity).ConfigureAwait(false);
+    if (entityId <= 0)
+    {
+        MClient.Logger.Error("PJ Lion entity not created.");
+        return;
+    }
 
     string logData = JsonConvert
     .SerializeObject(new 
@@ -65,13 +71,14 @@ try
             ApprovedBy = approvedBy,
             //FileProperties = fileProperties.ToString()
             Width = imageWidth,
-            Height = imageHeight
+            Height = imageHeight,
+            NewEntityId = entityId
         });
 
     MClient.Logger.Debug(logData);
 }
 catch (Exception e)
 {
-    MClient.Logger.Error($"Unable to parse asset properties and create new entity. Error: {e.Message}");
+    MClient.Logger.Error($"Unable to parse asset properties and create new entity. Error: {e.Message} Stack: {e.StackTrace}");
     return;
 }
