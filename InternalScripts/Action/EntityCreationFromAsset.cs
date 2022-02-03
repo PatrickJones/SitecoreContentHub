@@ -1,5 +1,4 @@
 using System.Linq;
-
 using System;
 using Stylelabs.M.Sdk;
 using System.Net;
@@ -11,6 +10,8 @@ using Newtonsoft;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
+const string ENTITY_NAME_TO_CREATE = "PJ.Lion"; // Update with entity name that is getting created
+
 var exeSource = Context.ExecutionSource;
 var exeType = Context.ExecutionType;
 
@@ -19,8 +20,8 @@ var targetType = Context.TargetType;
 
 var loadConfig = new EntityLoadConfiguration(
     CultureLoadOption.Default, 
-    new PropertyLoadOption("Title", "FileName", "FileProperties", "ApprovedBy"), 
-    new RelationLoadOption("TagToAsset"));
+    new PropertyLoadOption(GetPropertyLoadOptions()), 
+    new RelationLoadOption(GetRelationLoadOptions()));
 
 if (!targetId.HasValue)
 {
@@ -81,4 +82,18 @@ catch (Exception e)
 {
     MClient.Logger.Error($"Unable to parse asset properties and create new entity. Error: {e.Message} Stack: {e.StackTrace}");
     return;
+}
+
+// Property load options for asset/entity that was just created
+// Update with property names that exist on incoming entity
+string[] GetPropertyLoadOptions()
+{
+    return new string[] { "Title", "FileName", "FileProperties", "ApprovedBy" };  
+}
+
+// Relation load options for asset/entity that was just created
+// Update with relation names that exist on incoming entity
+string[] GetRelationLoadOptions()
+{
+    return new string[] { "TagToAsset" };
 }
