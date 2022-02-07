@@ -1,3 +1,5 @@
+//Script Type: Action
+
 using System.Linq;
 using System;
 using Stylelabs.M.Sdk;
@@ -46,7 +48,7 @@ try
     decimal imageWidth = (decimal)fileProperties["properties"]["width"];
     decimal imageHeight = (decimal)fileProperties["properties"]["height"];    
 
-    var pjLionEntity = await MClient.EntityFactory.CreateAsync("PJ.Lion").ConfigureAwait(false);
+    var pjLionEntity = await MClient.EntityFactory.CreateAsync(ENTITY_NAME_TO_CREATE).ConfigureAwait(false);
     
     pjLionEntity.SetPropertyValue("Name", fileName);
     pjLionEntity.SetPropertyValue("Width", imageWidth);
@@ -56,7 +58,7 @@ try
     var entityId = await MClient.Entities.SaveAsync(pjLionEntity).ConfigureAwait(false);
     if (entityId <= 0)
     {
-        MClient.Logger.Error("PJ Lion entity not created.");
+        MClient.Logger.Error($"{ENTITY_NAME_TO_CREATE} entity not created.");
         return;
     }
 
@@ -80,7 +82,7 @@ try
 }
 catch (Exception e)
 {
-    MClient.Logger.Error($"Unable to parse asset properties and create new entity. Error: {e.Message} Stack: {e.StackTrace}");
+    MClient.Logger.Error($"Unable to parse asset properties and create new {ENTITY_NAME_TO_CREATE} entity. Error: {e.Message} Stack: {e.StackTrace}");
     return;
 }
 
