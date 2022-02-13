@@ -28,7 +28,7 @@ try
         return;
     }
 
-    MClient.Logger.Info($"{ENTITY_NAME_TO_CREATE} id: {entiyId}");
+    MClient.Logger.Info($"{ENTITY_NAME_TO_CREATE} id: {entityId}");
 }
 catch (Exception e)
 {

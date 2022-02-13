@@ -23,7 +23,7 @@ var loadConfig = new EntityLoadConfiguration(
 
 if (!targetId.HasValue)
 {
-    MClient.Logger.Error("TargetId: " + targetId);
+    MClient.Logger.Error($"TargetId: {targetId.Value}");
     return;
 }
 var asset = await MClient.Entities.GetAsync(targetId.Value, loadConfig);
@@ -40,9 +40,9 @@ try
     asset.SetPropertyValue("Title", "<title>"); // set new property - Title
     asset.SetPropertyValue("FileName", "<fileName>"); // set new property - FileName
 
-    await MClient.Entities.SaveAsync(pjLionEntity).ConfigureAwait(false);
+    await MClient.Entities.SaveAsync(asset).ConfigureAwait(false);
     
-    MClient.Logger.Info(logData);
+    MClient.Logger.Info($"Entity: {targetId.Value} has been updated.");
 }
 catch (Exception e)
 {

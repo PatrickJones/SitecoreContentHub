@@ -18,7 +18,7 @@ var targetId = Context.TargetId; // Get enity id from incoming asset or from oth
 
 if (!targetId.HasValue)
 {
-    MClient.Logger.Error("TargetId: " + targetId);
+    MClient.Logger.Error($"TargetId: {targetId.Value}");
     return;
 }
 
@@ -26,7 +26,7 @@ try
 {
     await MClient.Entities.DeleteAsync(targetId).ConfigureAwait(false);
     
-    MClient.Logger.Info(logData);
+    MClient.Logger.Info($"Entity: {targetId.Value} has been deleted.");
 }
 catch (Exception e)
 {
