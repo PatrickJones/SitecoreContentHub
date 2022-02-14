@@ -12,8 +12,6 @@ using Newtonsoft;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-const string ENTITY_NAME_TO_UPDATE = "PJ.Lion"; // Update with entity name that is getting created
-
 var targetId = Context.TargetId; // Get enity id from incoming asset or from other source
 
 if (!targetId.HasValue)

@@ -13,11 +13,11 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 const string ENTITY_NAME_TO_CREATE = "PJ.Lion"; // Update with entity name that is getting created
-const string SAFARI_RELATION_NAME = "SafariToAsset"; // Update with entity name that is getting created
-const string ENTITY_RELATION_NAME = "PJ.Safari.Samburu"; // Update with entity name that is getting created
-const string ENTITY_RELATION_SAMBURU_PARENT = "PJ.Safari.Destination"; // Update with entity name that is getting created
-const string ENTITY_RELATION_DESTINATION_PARENT = "PJ.Safari.Kenya"; // Update with entity name that is getting created
-const string ENTITY_RELATION_KENYA_PARENT = "PJ.Safari.Location"; // Update with entity name that is getting created
+const string SAFARI_RELATION_NAME = "SafariToAsset"; // Update with taxanomy relation name
+const string ENTITY_RELATION_KENYA_PARENT = "PJ.Safari.Location"; // Update with top level (nested) relation
+const string ENTITY_RELATION_SAMBURU_PARENT = "PJ.Safari.Destination"; // Update with next level (nested) relation
+const string ENTITY_RELATION_DESTINATION_PARENT = "PJ.Safari.Kenya"; // Update with next level (nested) relation
+const string ENTITY_RELATION_NAME = "PJ.Safari.Samburu"; // Update with bottom level (nested) relation
 
 const bool CHAIN_RELATIONSHIP = true; //true - Chains the relationships in the entity; false - Adds only single relationship
 
